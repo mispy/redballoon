@@ -1,3 +1,8 @@
-[context.production]
-  [context.production.environment]
-    BASE_PATH = "/taxicab"
+[dev]
+  command = "yarn start" # Command to start your dev server
+  port = 8020 # Port that the dev server will be listening on
+  publish = "public" # If you use a _redirect file, provide the path to your static content folder
+[build]
+  command = "yarn build"
+  functions = "functions"
+  publish = "build"
