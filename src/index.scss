@@ -1,0 +1,32 @@
+@import "~bootstrap/scss/bootstrap.scss";
+
+body { margin: 0; }
+html, body { height: 100%; }
+
+body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+a, a:hover {
+	color: #f5aa44;
+}
+
+q {
+	font-style: italic;
+}
+
+h1 {
+	font-size: 2em;
+	margin-bottom: 0.8em;
+}
+
+@media (min-width: 801px) {
+}
+
+@media (max-width: 800px) {
+	html {
+		font-size: 14px;
+	}
+}
