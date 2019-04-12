@@ -9,7 +9,7 @@ export class App extends React.Component {
     render() {
         return <Router>
             <Route exact path="/:userSlug" render={({ match }) => <SignupForm referringUserSlug={match.params.userSlug}/>}/>
-            <Route exact path="/" render={() => <Redirect to="/jaiden"/>}/>
+            <Route exact path="/" render={() => <Redirect to="/Jaiden-Mispy-229439321632932353"/>}/>
         </Router>
     }
 }

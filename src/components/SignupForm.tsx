@@ -13,6 +13,7 @@ export class SignupForm extends React.Component<{ referringUserSlug: string }> {
     @observable name: string = ""// = "Jaiden Mispy"
     @observable outputUserId?: string
     @observable isLoading: boolean = false
+    @observable error?: string
 
     async save() {
         try {
@@ -20,7 +21,10 @@ export class SignupForm extends React.Component<{ referringUserSlug: string }> {
             const res = await savePerson({ name: this.name, email: this.email, referringUserId: this.referringUserId })
             runInAction(() => this.outputUserId = res.userId)
         } catch (err) {
-            // TODO
+            console.error(err)
+            runInAction(() => {
+                this.error = err.message
+            })
             throw err
         } finally {
             runInAction(() => this.isLoading = false)
@@ -81,8 +85,9 @@ export class SignupForm extends React.Component<{ referringUserSlug: string }> {
                     :
                     <input type="submit" value="Get referral link" className="btn btn-primary" />
                 }
-            </form>
-            <br/><p>You are being referred by <b>{this.referringUserName}</b>.</p>
+            </form><br/>
+            {this.error ? <div className="alert alert-danger">{this.error}</div> : undefined}
+            <p>You are being referred by <b>{this.referringUserName}</b>.</p>
         </React.Fragment>
     }
 }
