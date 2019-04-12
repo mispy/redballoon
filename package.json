@@ -10,6 +10,7 @@
   "dependencies": {
     "@types/aws-lambda": "^8.10.24",
     "@types/lodash": "^4.14.123",
+    "@types/md5": "^2.1.33",
     "@types/react": "^16.8.13",
     "@types/react-dom": "^16.8.4",
     "bootstrap": "^4.2.1",
@@ -18,8 +19,10 @@
     "d3-scale": "^2.1.2",
     "d3-scale-chromatic": "^1.3.3",
     "extract-text-webpack-plugin": "^4.0.0.beta-0",
+    "faunadb": "^2.6.1",
     "lodash": "^4.17.11",
-    "mobx": "^5.8.0",
+    "md5": "^2.2.1",
+    "mobx": "^5.9.4",
     "mobx-react": "^5.4.3",
     "node-sass": "^4.9.0",
     "normalize.css": "^5.0.0",
@@ -27,6 +30,7 @@
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
     "sass-loader": "^7.0.3",
+    "slugify": "^1.3.4",
     "style-loader": "^0.13.2",
     "ts-loader": "^4.4.1",
     "typescript": "^3.4.3",
@@ -37,6 +41,7 @@
     "webpack-manifest-plugin": "^2.0.0-rc.2"
   },
   "devDependencies": {
+    "@types/react-router-dom": "^4.3.2",
     "netlify-cli": "^2.11.7",
     "npm-run-all": "^4.1.5"
   }

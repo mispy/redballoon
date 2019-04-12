@@ -1,9 +1,9 @@
 import React = require('react')
 import ReactDOM = require('react-dom')
-import { SignupForm } from './components/SignupForm'
+import { App } from './components/App'
 import './index.scss'
 
 function main() {
-    ReactDOM.render(<SignupForm/>, document.querySelector("#root"))
+    ReactDOM.render(<App/>, document.querySelector("#root"))
 }
 main()
