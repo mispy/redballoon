@@ -1,10 +1,9 @@
-import * as THREE from 'three'
-declare var require: any;
-const OrbitControls = require('three-orbit-controls')(THREE)
-import * as _ from 'lodash'
+import React = require('react')
+import ReactDOM = require('react-dom')
+import { SignupForm } from './components/SignupForm'
 import './index.scss'
 
 function main() {
-
+    ReactDOM.render(<SignupForm/>, document.querySelector("#root"))
 }
 main()

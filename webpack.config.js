@@ -1,8 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const ManifestPlugin = require('webpack-manifest-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const BASE_PATH = process.env.BASE_PATH
@@ -52,7 +50,6 @@ module.exports = (env, argv) => {
             // This plugin extracts css files required in the entry points
             // into a separate CSS bundle for download
             new ExtractTextPlugin('assets/[name].css'),
-            new ManifestPlugin(),
             new CopyWebpackPlugin([{ 
                 from: 'public',
                 transform: (content, path) => {
