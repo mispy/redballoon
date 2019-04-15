@@ -71,7 +71,7 @@ export class SignupForm extends React.Component<{ referringUserSlug?: string }> 
 
     render() {
         return <React.Fragment>
-            {this.redirectTo && <Redirect to={this.redirectTo}/>}
+            {this.redirectTo && <Redirect push to={this.redirectTo}/>}
             <h1>Help us find an immunotherapy researcher and win money</h1>
             <p>Helix Nanotechnologies is looking for an experienced scientist to lead the development of personalized cancer vaccines.</p>
             <p>We're giving <b>$2000</b> to the successful candidate, <b>$1000</b> to the person who invited them, <b>$500</b> to whoever invited the inviter, and so on.</p>
