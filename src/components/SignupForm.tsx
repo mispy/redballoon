@@ -3,7 +3,6 @@ import { action, observable, computed, runInAction } from 'mobx'
 import { observer } from 'mobx-react'
 import { Redirect } from "react-router-dom";
 import md5 = require('md5')
-const slugify = require('slugify')
 
 import { savePerson } from '../api'
 
@@ -22,7 +21,7 @@ export class SignupForm extends React.Component<{ referringUserSlug?: string }> 
             const res = await savePerson({ name: this.name, email: this.email, referringUserId: this.referringUser ? this.referringUser.id : "none" })
             runInAction(() => {
                 if (this.loadingButton === 'invite')
-                    this.redirectTo = `/success/${slugify(this.name)}-${res.userId}`
+                    this.redirectTo = `/success/${encodeURIComponent(this.name).replace(/%20/g, "+")}-${res.userId}`
                 else
                     window.location.replace("https://www.helixnano.com/jobs")
             })
@@ -48,7 +47,7 @@ export class SignupForm extends React.Component<{ referringUserSlug?: string }> 
         const spl = this.props.referringUserSlug.split(/-/g)
 
         return {
-            name: this.props.referringUserSlug.replace(/-[^-]+$/, "").replace(/-/g, ' '),
+            name: this.props.referringUserSlug.replace(/-[^-]+$/, "").replace(/\+/g, ' '),
             id: spl[spl.length-1]
         }
     }
@@ -79,7 +78,7 @@ export class SignupForm extends React.Component<{ referringUserSlug?: string }> 
             <form method="POST" onSubmit={this.onSubmit}>
                 <div className="form-group">
                     <label htmlFor="name">Name</label>
-                    <input id="name" name="name" type="text" className="form-control" placeholder="Your name" onChange={this.onName} value={this.name} required disabled={this.isLoading}/>
+                    <input id="name" name="name" type="text" className="form-control" placeholder="Your full name" onChange={this.onName} value={this.name} required disabled={this.isLoading}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="email">Email Address</label>
