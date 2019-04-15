@@ -8,18 +8,24 @@ const slugify = require('slugify')
 import { savePerson } from '../api'
 
 @observer
-export class SignupForm extends React.Component<{ referringUserSlug: string }> {
+export class SignupForm extends React.Component<{ referringUserSlug?: string }> {
     @observable email: string = ""// = "jaiden@mispy.me"
     @observable name: string = ""// = "Jaiden Mispy"
-    @observable outputUserId?: string
     @observable isLoading: boolean = false
+    @observable loadingButton: string = ''
     @observable error?: string
+    @observable redirectTo?: string
 
     async save() {
         try {
             this.isLoading = true
-            const res = await savePerson({ name: this.name, email: this.email, referringUserId: this.referringUserId })
-            runInAction(() => this.outputUserId = res.userId)
+            const res = await savePerson({ name: this.name, email: this.email, referringUserId: this.referringUser ? this.referringUser.id : "none" })
+            runInAction(() => {
+                if (this.loadingButton === 'invite')
+                    this.redirectTo = `/success/${slugify(this.name)}-${res.userId}`
+                else
+                    window.location.replace("https://www.helixnano.com/jobs")
+            })
         } catch (err) {
             console.error(err)
             runInAction(() => {
@@ -36,17 +42,15 @@ export class SignupForm extends React.Component<{ referringUserSlug: string }> {
         this.save()
     }
 
-    @computed get referringUserId() {
+    @computed get referringUser() {
+        if (!this.props.referringUserSlug) return undefined
+
         const spl = this.props.referringUserSlug.split(/-/g)
-        return spl[spl.length-1]
-    }
 
-    @computed get referringUserName() {
-        return this.props.referringUserSlug.replace(/-[^-]+$/, "").replace(/-/g, ' ')
-    }
-
-    @computed get outputUserSlug(): string|undefined {
-        return this.outputUserId ? `${slugify(this.name)}-${this.outputUserId}` : undefined
+        return {
+            name: this.props.referringUserSlug.replace(/-[^-]+$/, "").replace(/-/g, ' '),
+            id: spl[spl.length-1]
+        }
     }
 
     @action.bound onEmail(ev: React.ChangeEvent<HTMLInputElement>) {
@@ -57,37 +61,50 @@ export class SignupForm extends React.Component<{ referringUserSlug: string }> {
         this.name = ev.target.value
     }
 
-    componentDidUpdate() {
-        this.outputUserId = undefined
+    @action.bound onApply() {
+        this.loadingButton = 'apply'
+    }
+
+    @action.bound onGetInvite() {
+        this.loadingButton = 'invite'
     }
 
     render() {
-        console.log(this.props.referringUserSlug)
-
         return <React.Fragment>
-            {this.outputUserSlug && <Redirect to={this.outputUserSlug}/>}
-            <h2>Sign up</h2>
+            {this.redirectTo && <Redirect to={this.redirectTo}/>}
+            <h1>Help us find an immunotherapy researcher and win money</h1>
+            <p>Helix Nanotechnologies is looking for an experienced scientist to lead the development of personalized cancer vaccines.</p>
+            <p>We're giving <b>$2000</b> to the first successful candidate, <b>$1000</b> to the person who invited them, <b>$500</b> to whoever invited the inviter, and so on.</p>
             <form method="POST" onSubmit={this.onSubmit}>
-                <div className="form-group">
-                    <label htmlFor="email">Email Address</label>
-                    <input id="email" name="email" type="email" className="form-control" placeholder="Your email" onChange={this.onEmail} value={this.email} required disabled={this.isLoading}/>
-                </div>
                 <div className="form-group">
                     <label htmlFor="name">Name</label>
                     <input id="name" name="name" type="text" className="form-control" placeholder="Your name" onChange={this.onName} value={this.name} required disabled={this.isLoading}/>
                 </div>
-                {this.isLoading ?
+                <div className="form-group">
+                    <label htmlFor="email">Email Address</label>
+                    <input id="email" name="email" type="email" className="form-control" placeholder="Your email" onChange={this.onEmail} value={this.email} required disabled={this.isLoading}/>
+                </div>
+                {(this.isLoading && this.loadingButton === 'invite') ?
                     <button className="btn btn-primary" type="button" disabled={this.isLoading}>
-                        <span>Get referral link </span>
+                        <span>Get invite link </span>
                         <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         <span className="sr-only">Loading...</span>
                     </button>
                     :
-                    <input type="submit" value="Get referral link" className="btn btn-primary" />
+                    <input type="submit" value="Get invite link" className="btn btn-primary" onClick={this.onGetInvite}/>
+                }
+                {(this.isLoading && this.loadingButton === 'apply') ?
+                    <button className="btn btn-light" type="button" disabled={this.isLoading}>
+                        <span>Apply for the position </span>
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span className="sr-only">Loading...</span>
+                    </button>
+                    :
+                    <input type="submit" value="Apply for the position" className="btn btn-light" onClick={this.onApply}/>
                 }
             </form><br/>
             {this.error ? <div className="alert alert-danger">{this.error}</div> : undefined}
-            <p>You are being referred by <b>{this.referringUserName}</b>.</p>
+            {this.referringUser ? <p>You are being invited by <strong>{this.referringUser.name}</strong>. If you find our researcher, both you and {this.referringUser.name} will win money.</p> : undefined}
         </React.Fragment>
     }
 }

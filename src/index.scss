@@ -9,10 +9,6 @@ body {
 	justify-content: center;
 }
 
-a, a:hover {
-	color: #f5aa44;
-}
-
 q {
 	font-style: italic;
 }
@@ -29,4 +25,12 @@ h1 {
 	html {
 		font-size: 14px;
 	}
+}
+
+#root {
+	max-width: 600px;
+}
+
+.btn-light {
+	float: right;
 }
