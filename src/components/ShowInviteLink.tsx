@@ -11,7 +11,7 @@ export class ShowInviteLink extends React.Component<{ userSlug: string }> {
     }
 
     @computed get userName() {
-        return this.props.userSlug.replace(/-[^-]+$/, "").replace(/\+/g, ' ')
+        return decodeURIComponent(this.props.userSlug.replace(/-[^-]+$/, "").replace(/\+/g, ' '))
     }
 
     @computed get canonicalUrl() {

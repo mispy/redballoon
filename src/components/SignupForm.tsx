@@ -28,11 +28,10 @@ export class SignupForm extends React.Component<{ referringUserSlug?: string }> 
         } catch (err) {
             console.error(err)
             runInAction(() => {
+                this.isLoading = false
                 this.error = err.message
             })
             throw err
-        } finally {
-            runInAction(() => this.isLoading = false)
         }
     }
 
