@@ -13,7 +13,7 @@ export const savePerson = (person: Person) => {
     })
 }
 
-export const applyForPosition = (args: { email: string, name: string, coverLetter: string, cvFile: { filename: string, contentType: string, dataUri: string } }) => {
+export const applyForPosition = (args: { email: string, name: string, coverLetter: string, referringUser?: { id: string, name: string }, cvFile: { filename: string, contentType: string, dataUri: string } }) => {
     return fetch(`/.netlify/functions/applyForPosition`, {
         body: JSON.stringify(args),
         method: 'POST'

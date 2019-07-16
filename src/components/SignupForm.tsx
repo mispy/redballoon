@@ -1,15 +1,16 @@
 import React = require("react")
 import { action, observable, computed, runInAction } from 'mobx'
 import { observer } from 'mobx-react'
-import { Redirect } from "react-router-dom";
-import md5 = require('md5')
+import { Redirect, Link } from "react-router-dom"
 
 import { savePerson } from '../api'
+import { AppContext } from "./AppContext"
+import { parseReferrer } from "../utils";
 
 @observer
 export class SignupForm extends React.Component<{ referringUserSlug?: string }> {
-    @observable email: string = ""// = "jaiden@mispy.me"
-    @observable name: string = ""// = "Jaiden Mispy"
+    static contextType = AppContext
+
     @observable isLoading: boolean = false
     @observable loadingButton: string = ''
     @observable error?: string
@@ -18,12 +19,12 @@ export class SignupForm extends React.Component<{ referringUserSlug?: string }> 
     async save() {
         try {
             this.isLoading = true
-            const res = await savePerson({ name: this.name, email: this.email, referringUserId: this.referringUser ? this.referringUser.id : "none" })
+            const res = await savePerson({ name: this.context.state.name, email: this.context.state.email, referringUserId: this.referringUser ? this.referringUser.id : "none" })
             runInAction(() => {
                 if (this.loadingButton === 'invite')
-                    this.redirectTo = `/success/${encodeURIComponent(this.name).replace(/%20/g, "+")}-${res.userId}`
+                    this.redirectTo = `/success/${encodeURIComponent(this.context.state.name).replace(/%20/g, "+")}-${res.userId}`
                 else
-                    window.location.replace("https://www.helixnano.com/jobs")
+                    this.redirectTo = `/apply`
             })
         } catch (err) {
             console.error(err)
@@ -41,22 +42,16 @@ export class SignupForm extends React.Component<{ referringUserSlug?: string }> 
     }
 
     @computed get referringUser() {
-        if (!this.props.referringUserSlug) return undefined
-
-        const spl = this.props.referringUserSlug.split(/-/g)
-
-        return {
-            name: this.props.referringUserSlug.replace(/-[^-]+$/, "").replace(/\+/g, ' '),
-            id: spl[spl.length-1]
-        }
+        const { referringUserSlug } = this.props
+        return referringUserSlug ? parseReferrer(referringUserSlug) : undefined
     }
 
     @action.bound onEmail(ev: React.ChangeEvent<HTMLInputElement>) {
-        this.email = ev.target.value
+        this.context.state.email = ev.target.value
     }
 
     @action.bound onName(ev: React.ChangeEvent<HTMLInputElement>) {
-        this.name = ev.target.value
+        this.context.state.name = ev.target.value
     }
 
     @action.bound onApply() {
@@ -77,11 +72,11 @@ export class SignupForm extends React.Component<{ referringUserSlug?: string }> 
             <form method="POST" onSubmit={this.onSubmit}>
                 <div className="form-group">
                     <label htmlFor="name">Name</label>
-                    <input id="name" name="name" type="text" className="form-control" placeholder="Your full name" onChange={this.onName} value={this.name} required disabled={this.isLoading}/>
+                    <input id="name" name="name" type="text" className="form-control" placeholder="Your full name" onChange={this.onName} value={this.context.state.name} required disabled={this.isLoading}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="email">Email Address</label>
-                    <input id="email" name="email" type="email" className="form-control" placeholder="Your email" onChange={this.onEmail} value={this.email} required disabled={this.isLoading}/>
+                    <input id="email" name="email" type="email" className="form-control" placeholder="Your email" onChange={this.onEmail} value={this.context.state.email} required disabled={this.isLoading}/>
                 </div>
                 {(this.isLoading && this.loadingButton === 'invite') ?
                     <button className="btn btn-primary" type="button" disabled={this.isLoading}>
@@ -92,15 +87,8 @@ export class SignupForm extends React.Component<{ referringUserSlug?: string }> 
                     :
                     <input type="submit" value="Get invite link" className="btn btn-primary" onClick={this.onGetInvite}/>
                 }
-                {(this.isLoading && this.loadingButton === 'apply') ?
-                    <button className="btn btn-light" type="button" disabled={this.isLoading}>
-                        <span>Apply for the position </span>
-                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        <span className="sr-only">Loading...</span>
-                    </button>
-                    :
-                    <input type="submit" value="Apply for the position" className="btn btn-light" onClick={this.onApply}/>
-                }
+                <em>-or-</em>
+                <Link to={`/apply${this.props.referringUserSlug ? "/"+this.props.referringUserSlug : ""}`}><button className="btn btn-success" disabled={this.isLoading}>Apply for the position</button></Link>
             </form><br/>
             {this.error ? <div className="alert alert-danger">{this.error}</div> : undefined}
             {this.referringUser ? <p>You are being invited by <strong>{this.referringUser.name}</strong>. If you find our researcher, both you and {this.referringUser.name} will win money.</p> : undefined}

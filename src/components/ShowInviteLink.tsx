@@ -30,7 +30,7 @@ export class ShowInviteLink extends React.Component<{ userSlug: string }> {
             </div>
             <p>If a researcher successfully applies for this position using the link above, you will get <strong>$1000</strong>. If you invite someone who then invites the successful applicant, you'll get <strong>$500</strong>, and so on.</p>
             <p>If you win a reward, we'll contact you at the email address you provided. Invite all your friends!</p>
-            <p>You can also <a href="https://helixnano.com/jobs">apply for the position yourself</a>.</p>
+            {/* <p>You can also <a href="/apply">apply for the position yourself</a>.</p> */}
         </React.Fragment>
     }
 }
