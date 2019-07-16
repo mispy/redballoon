@@ -15,12 +15,14 @@ exports.handler = async function(event: APIGatewayEvent, context: Context) {
       await client.query(q.Create(q.Class("users"), { data: user })) as any
     } catch (err) {
       if (err.message === "instance not unique") {
-        // That's fine, it's already there
+        // Idempotent-- fine if already exists
       } else {
         throw err
       }
     }
 
+    // Find the matching user entry (either we just created it or it already existed)
+    // We specifically want a match on the unique combination of email-name-referringUserId
     const resp = await client.query(q.Map(
       q.Paginate(
         q.Intersection(
@@ -32,7 +34,6 @@ exports.handler = async function(event: APIGatewayEvent, context: Context) {
       q.Lambda("X", q.Get(q.Var("X")))
     )) as any
 
-    // const body = await hello();  
     return { statusCode: 200, body: JSON.stringify({ userId: resp.data[0].ref.id }) };
   } catch (err) {
     console.error(err)
