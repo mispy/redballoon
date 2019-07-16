@@ -26,13 +26,13 @@ exports.handler = async function(event: APIGatewayEvent, context: Context) {
     const body64 = application.cvFile.dataUri.slice(index+'base64,'.length)
     const cvFileBuffer = Buffer.from(body64, 'base64')
 
-    const domain = 'sandboxb0af8975de4c40dc8c69c2b398f0dd49.mailgun.org'
+    const domain = 'mg.mispy.me'
     const mailgun = mailgunjs({apiKey: process.env.MAILGUN_API_SECRET||"", domain: domain})
 
     const attachment = new mailgun.Attachment({ data: cvFileBuffer, filename: application.cvFile.filename, contentType: application.cvFile.contentType })
     const mail: mailgunjs.messages.SendData = {
-      from: `${application.name} <postmaster@sandboxb0af8975de4c40dc8c69c2b398f0dd49.mailgun.org>`,
-      to: 'misprime@gmail.com',
+      from: `${application.name} <helixnano@mg.mispy.me>`,
+      to: process.env.APPLICATION_HANDLER_EMAIL||"",
       subject: `Application from ${application.name}`,
       text: application.coverLetter + (application.referringUser ? `\n\nReferred by: ${application.referringUser.name} ${application.referringUser.id}` : `\n\nReferred by: none`),
       "h:Reply-To": application.email,
