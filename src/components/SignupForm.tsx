@@ -65,10 +65,12 @@ export class SignupForm extends React.Component<{ referringUserSlug?: string }> 
     render() {
         return <React.Fragment>
             {this.redirectTo && <Redirect push to={this.redirectTo}/>}
-            <h1>Help us find an immunotherapy researcher and win money</h1>
-            <p>Helix Nanotechnologies is looking for an experienced scientist to lead the development of personalized cancer vaccines.</p>
-            <p>We're giving <b>$2000</b> to the successful candidate, <b>$1000</b> to the person who invited them, <b>$500</b> to whoever invited the inviter, and so on.</p>
-            <p>Sign up to join the search:</p>
+            <h1>Help us hire a brilliant immunotherapy scientist and win money!</h1>
+            <p>Helix Nanotechnologies needs you! We recently launched <a href="https://medium.com/@hannu_64912/helixnano-announces-grant-from-schmidt-futures-to-pursue-personalized-cancer-vaccines-323cbbd6bee0">a project backed by Eric Schmidt</a> to supercharge future cancer immunotherapies. Now we need a pioneering scientist to lead it, with the right attitude and skills -- <a href="https://www.helixnano.com/jobs">full role description here</a>.</p>
+            <p>You can help us find them. By signing up below with the <em>blue button</em>, you'll get an invite link that you can forward to smart friends in the field, post on Twitter/Facebook/LinkedIn, send to mailing lists of academic departments, or anything else you can think of to find the best candidate.</p>
+            <p>It'll be worth your while. We're giving $2000 to the successful candidate, $1000 to the person who invited them to apply, $500 to whoever invited the inviter, and so on. So the more people you recruit to sign up to the search, the higher your chances to win a share of the prize.</p>
+            <p>Or if you think <em>you</em> are the right person for the job, just apply using the <em>green button</em> below.</p>
+            <p>With your help, we may be able to make a difference to cancer patients around the world. Happy hunting!</p>
             <form method="POST" onSubmit={this.onSubmit}>
                 <div className="form-group">
                     <label htmlFor="name">Name</label>
