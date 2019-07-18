@@ -5,8 +5,11 @@ html, body { height: 100%; }
 
 body {
 	display: flex;
-	align-items: center;
-	justify-content: center;
+}
+
+#root {
+	margin: auto;
+	padding: 16px;
 }
 
 q {
@@ -16,9 +19,6 @@ q {
 h1 {
 	font-size: 2em;
 	margin-bottom: 0.8em;
-}
-
-@media (min-width: 801px) {
 }
 
 @media (max-width: 800px) {

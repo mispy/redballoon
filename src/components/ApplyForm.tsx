@@ -23,7 +23,7 @@ export class ApplyForm extends React.Component<{ referringUserSlug?: string }> {
 
         try {
             this.isLoading = true
-            const res = await applyForPosition({ 
+            await applyForPosition({ 
                 email: this.context.state.email,
                 name: this.context.state.name, 
                 referringUser: this.referringUser,

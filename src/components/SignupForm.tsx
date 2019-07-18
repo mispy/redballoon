@@ -5,7 +5,7 @@ import { Redirect, Link } from "react-router-dom"
 
 import { savePerson } from '../api'
 import { AppContext } from "./AppContext"
-import { parseReferrer } from "../utils";
+import { parseReferrer } from "../utils"
 
 @observer
 export class SignupForm extends React.Component<{ referringUserSlug?: string }> {
