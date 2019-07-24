@@ -17,11 +17,11 @@ export class App extends React.Component {
             <AppContext.Provider value={this.childContext}>
                 <Router>
                     <Switch>
-                        <Route exact path="/success/:userSlug" render={({ match }) => <ShowInviteLink userSlug={match.params.userSlug}/>}/>           
+                        <Route exact path="/success/:userSlug" render={({ match }) => <ShowInviteLink userSlug={match.params.userSlug}/>}/>
                         <Route exact path="/apply-success" render={({ match }) => <ApplySuccess/>}/>
-                        <Route exact path="/apply/:userSlug" render={({ match }) => <ApplyForm referringUserSlug={match.params.userSlug}/>}/>            
+                        <Route exact path="/apply/:userSlug" render={({ match }) => <ApplyForm referringUserSlug={match.params.userSlug}/>}/>
                         <Route exact path="/apply" render={() => <ApplyForm/>}/>            
-                    <Route exact path="/:userSlug" render={({ match }) => <SignupForm referringUserSlug={match.params.userSlug}/>}/>
+                        <Route exact path="/:userSlug" render={({ match }) => <SignupForm referringUserSlug={match.params.userSlug}/>}/>
                         <Route exact path="/" render={() => <SignupForm/>}/>
                     </Switch>
                 </Router>
