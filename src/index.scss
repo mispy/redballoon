@@ -16,6 +16,15 @@ q {
 	font-style: italic;
 }
 
+a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #00a2e1;
+}
+
 h1 {
 	font-size: 2em;
 	margin-bottom: 0.8em;
