@@ -23,7 +23,7 @@
     "extract-text-webpack-plugin": "^4.0.0.beta-0",
     "faunadb": "^2.6.1",
     "lambda-multipart-parser": "^0.0.2",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "mailgun-js": "^0.22.0",
     "md5": "^2.2.1",
     "mobx": "^5.9.4",
